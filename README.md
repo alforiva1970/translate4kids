@@ -11,7 +11,7 @@
 Un'app educativa gratuita per aiutare i bambini a imparare parole in italiano e arabo. Perfetta per l'integrazione scolastica!
 
 ### Funzionalità
-- 📚 **80+ parole** in 10 categorie (saluti, famiglia, scuola, casa, cibo, colori, numeri, giorni, animali, frasi)
+- 📚 **200+ parole** con emoji in 15 categorie (saluti, famiglia, scuola, casa, cibo, colori, numeri, giorni, animali, corpo, vestiti, emozioni, verbi, natura, frasi)
 - 🔊 **Audio** - Ascolta la pronuncia delle parole
 - ⌨️ **Tastiera araba** - Per scrivere in arabo
 - 🎮 **Modalità Quiz** - Gioca e impara con le stelle!

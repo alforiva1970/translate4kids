@@ -1,4 +1,4 @@
-const CACHE_NAME = 'traduci-impara-v2';
+const CACHE_NAME = 'traduci-impara-v3';
 const urlsToCache = [
     './',
     './index.html',
