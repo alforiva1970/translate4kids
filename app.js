@@ -350,5 +350,268 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // === Inizializzazione ===
     createArabicKeyboard();
-    renderWordGrid("saluti"); // Mostra la prima categoria di default
+    renderWordGrid("saluti");
+
+    // =============================================
+    // === QUIZ MODE ===
+    // =============================================
+
+    const quizSection = document.getElementById("quizSection");
+    const wordCategoriesSection = document.querySelector(".word-categories");
+    const columnsSection = document.querySelector(".columns");
+    const modeTabs = document.querySelectorAll(".mode-tab");
+
+    // Quiz elements
+    const quizWord = document.getElementById("quizWord");
+    const quizOptions = document.getElementById("quizOptions");
+    const quizFeedback = document.getElementById("quizFeedback");
+    const starCount = document.getElementById("starCount");
+    const streakCount = document.getElementById("streakCount");
+    const progressFill = document.getElementById("progressFill");
+    const progressText = document.getElementById("progressText");
+    const nextQuestionBtn = document.getElementById("nextQuestionBtn");
+    const restartQuizBtn = document.getElementById("restartQuizBtn");
+    const quizResults = document.getElementById("quizResults");
+    const quizCard = document.querySelector(".quiz-card");
+    const finalStars = document.getElementById("finalStars");
+    const finalMessage = document.getElementById("finalMessage");
+    const playAgainBtn = document.getElementById("playAgainBtn");
+
+    // Quiz state
+    let quizQuestions = [];
+    let currentQuestion = 0;
+    let stars = 0;
+    let streak = 0;
+    let totalQuestions = 10;
+    let correctAnswer = "";
+    let answered = false;
+
+    // Get all words as array for quiz
+    function getAllWords() {
+        const words = [];
+        for (const [italian, arabic] of Object.entries(translationMap)) {
+            words.push({ italian, arabic });
+        }
+        return words;
+    }
+
+    // Shuffle array
+    function shuffle(array) {
+        const arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    // Generate quiz questions
+    function generateQuizQuestions() {
+        const allWords = getAllWords();
+        const shuffled = shuffle(allWords);
+        quizQuestions = shuffled.slice(0, totalQuestions);
+    }
+
+    // Start quiz
+    function startQuiz() {
+        generateQuizQuestions();
+        currentQuestion = 0;
+        stars = 0;
+        streak = 0;
+        answered = false;
+
+        updateScoreDisplay();
+        quizResults.style.display = "none";
+        quizCard.style.display = "block";
+        document.querySelector(".quiz-header").style.display = "block";
+        quizFeedback.textContent = "";
+        quizFeedback.className = "quiz-feedback";
+        nextQuestionBtn.style.display = "none";
+        restartQuizBtn.style.display = "none";
+
+        showQuestion();
+    }
+
+    // Show current question
+    function showQuestion() {
+        if (currentQuestion >= totalQuestions) {
+            showResults();
+            return;
+        }
+
+        answered = false;
+        const question = quizQuestions[currentQuestion];
+        quizWord.textContent = question.italian;
+        correctAnswer = question.arabic;
+
+        // Generate 4 options (1 correct + 3 wrong)
+        const allWords = getAllWords();
+        const wrongOptions = shuffle(
+            allWords.filter(w => w.arabic !== correctAnswer)
+        ).slice(0, 3);
+
+        const options = shuffle([
+            { arabic: correctAnswer, correct: true },
+            ...wrongOptions.map(w => ({ arabic: w.arabic, correct: false }))
+        ]);
+
+        // Render options
+        quizOptions.innerHTML = "";
+        options.forEach(opt => {
+            const btn = document.createElement("button");
+            btn.className = "quiz-option";
+            btn.textContent = opt.arabic;
+            btn.dataset.correct = opt.correct;
+            btn.addEventListener("click", () => handleAnswer(btn, opt.correct));
+            quizOptions.appendChild(btn);
+        });
+
+        // Update progress
+        const progress = ((currentQuestion) / totalQuestions) * 100;
+        progressFill.style.width = progress + "%";
+        progressText.textContent = `Domanda ${currentQuestion + 1} di ${totalQuestions}`;
+
+        quizFeedback.textContent = "";
+        quizFeedback.className = "quiz-feedback";
+        nextQuestionBtn.style.display = "none";
+    }
+
+    // Handle answer
+    function handleAnswer(btn, isCorrect) {
+        if (answered) return;
+        answered = true;
+
+        // Disable all options
+        document.querySelectorAll(".quiz-option").forEach(opt => {
+            opt.classList.add("disabled");
+            if (opt.dataset.correct === "true") {
+                opt.classList.add("correct");
+            }
+        });
+
+        if (isCorrect) {
+            btn.classList.add("correct");
+            stars++;
+            streak++;
+            quizFeedback.textContent = getCorrectMessage();
+            quizFeedback.className = "quiz-feedback correct";
+
+            // Play success sound effect (visual feedback)
+            btn.style.transform = "scale(1.1)";
+            setTimeout(() => btn.style.transform = "", 300);
+        } else {
+            btn.classList.add("wrong");
+            streak = 0;
+            quizFeedback.textContent = getWrongMessage(quizQuestions[currentQuestion].italian, correctAnswer);
+            quizFeedback.className = "quiz-feedback wrong";
+        }
+
+        updateScoreDisplay();
+
+        // Show next button or auto-advance
+        if (currentQuestion < totalQuestions - 1) {
+            nextQuestionBtn.style.display = "inline-block";
+        } else {
+            setTimeout(showResults, 1500);
+        }
+    }
+
+    // Correct messages
+    function getCorrectMessage() {
+        const messages = [
+            "✅ Bravissimo!",
+            "✅ Esatto!",
+            "✅ Perfetto!",
+            "✅ Giusto!",
+            "✅ Super!",
+            "✅ Fantastico!"
+        ];
+        return messages[Math.floor(Math.random() * messages.length)];
+    }
+
+    // Wrong messages
+    function getWrongMessage(italian, arabic) {
+        return `❌ Era: ${arabic}`;
+    }
+
+    // Update score display
+    function updateScoreDisplay() {
+        starCount.textContent = stars;
+        streakCount.textContent = streak;
+    }
+
+    // Show results
+    function showResults() {
+        quizCard.style.display = "none";
+        document.querySelector(".quiz-header").style.display = "none";
+        quizFeedback.textContent = "";
+        nextQuestionBtn.style.display = "none";
+        quizResults.style.display = "block";
+
+        // Calculate star rating (1-3 stars based on score)
+        const percentage = (stars / totalQuestions) * 100;
+        let starsDisplay = "";
+        let message = "";
+
+        if (percentage >= 90) {
+            starsDisplay = "⭐⭐⭐";
+            message = "Sei un campione! 🏆";
+        } else if (percentage >= 70) {
+            starsDisplay = "⭐⭐";
+            message = "Ottimo lavoro! Continua così! 💪";
+        } else if (percentage >= 50) {
+            starsDisplay = "⭐";
+            message = "Bene! Riprova per migliorare! 📚";
+        } else {
+            starsDisplay = "💪";
+            message = "Non mollare! La pratica rende perfetti! 🌱";
+        }
+
+        finalStars.textContent = starsDisplay;
+        finalMessage.textContent = `Hai indovinato ${stars}/${totalQuestions}. ${message}`;
+
+        // Save high score
+        const savedHighScore = localStorage.getItem("translate4kids_highscore") || 0;
+        if (stars > savedHighScore) {
+            localStorage.setItem("translate4kids_highscore", stars);
+            finalMessage.textContent += " 🎉 Nuovo record!";
+        }
+    }
+
+    // Next question
+    function nextQuestion() {
+        currentQuestion++;
+        showQuestion();
+    }
+
+    // Mode switching
+    function switchMode(mode) {
+        modeTabs.forEach(t => t.classList.remove("active"));
+        document.querySelector(`[data-mode="${mode}"]`).classList.add("active");
+
+        if (mode === "learn") {
+            columnsSection.style.display = "flex";
+            wordCategoriesSection.style.display = "block";
+            quizSection.style.display = "none";
+        } else {
+            columnsSection.style.display = "none";
+            wordCategoriesSection.style.display = "none";
+            quizSection.style.display = "block";
+            startQuiz();
+        }
+    }
+
+    // Event listeners for quiz
+    modeTabs.forEach(tab => {
+        tab.addEventListener("click", (e) => {
+            switchMode(e.target.dataset.mode);
+        });
+    });
+
+    nextQuestionBtn.addEventListener("click", nextQuestion);
+    playAgainBtn.addEventListener("click", startQuiz);
+
+    if (restartQuizBtn) {
+        restartQuizBtn.addEventListener("click", startQuiz);
+    }
 });

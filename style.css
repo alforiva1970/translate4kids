@@ -404,6 +404,283 @@ button {
     border: 1px solid #ddd;
 }
 
+/* === Mode Tabs (Impara/Gioca) === */
+.mode-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 30px 0;
+}
+
+.mode-tab {
+    padding: 15px 35px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: white;
+    color: #666;
+    box-shadow: var(--shadow);
+}
+
+.mode-tab:hover {
+    transform: translateY(-3px);
+}
+
+.mode-tab.active {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    box-shadow: 0 8px 25px rgba(108, 99, 255, 0.4);
+}
+
+/* === Quiz Section === */
+.quiz-section {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.quiz-header {
+    margin-bottom: 25px;
+}
+
+.score-display {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.stars {
+    color: #FFD700;
+}
+
+.streak {
+    color: #FF6B6B;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+    width: 10%;
+}
+
+#progressText {
+    color: #888;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* Quiz Card */
+.quiz-card {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+    padding: 30px;
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+}
+
+.quiz-instruction {
+    color: #888;
+    font-size: 1rem;
+    margin: 0 0 10px 0;
+}
+
+.quiz-word {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin: 0 0 25px 0;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Quiz Options */
+.quiz-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.quiz-option {
+    padding: 18px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    background: white;
+    border: 3px solid #e0e0e0;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.3s;
+    direction: rtl;
+}
+
+.quiz-option:hover {
+    border-color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-option.correct {
+    background: #d4edda;
+    border-color: #28a745;
+    animation: correctPop 0.5s;
+}
+
+.quiz-option.wrong {
+    background: #f8d7da;
+    border-color: #dc3545;
+    animation: shake 0.5s;
+}
+
+.quiz-option.disabled {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+@keyframes correctPop {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-10px);
+    }
+
+    75% {
+        transform: translateX(10px);
+    }
+}
+
+/* Feedback */
+.quiz-feedback {
+    font-size: 1.3rem;
+    font-weight: 700;
+    min-height: 40px;
+    margin-bottom: 15px;
+}
+
+.quiz-feedback.correct {
+    color: #28a745;
+}
+
+.quiz-feedback.wrong {
+    color: #dc3545;
+}
+
+/* Controls */
+.quiz-controls {
+    margin-top: 15px;
+}
+
+.next-btn,
+.restart-btn,
+.play-again-btn {
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.next-btn {
+    background: var(--primary);
+    color: white;
+}
+
+.next-btn:hover {
+    background: var(--primary-light);
+    transform: scale(1.05);
+}
+
+.restart-btn {
+    background: #f0f0f0;
+    color: #666;
+    margin-left: 10px;
+}
+
+/* Results */
+.quiz-results {
+    padding: 40px;
+}
+
+.quiz-results h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.final-score {
+    margin: 30px 0;
+}
+
+#finalStars {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 15px;
+    animation: bounce 1s infinite;
+}
+
+#finalMessage {
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.play-again-btn {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    font-size: 1.2rem;
+    padding: 18px 50px;
+}
+
+.play-again-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(108, 99, 255, 0.4);
+}
+
 /* === Safe Area for Notched Phones === */
 @supports (padding: env(safe-area-inset-bottom)) {
     body {
