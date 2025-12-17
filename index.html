@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#6C63FF">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Traduci">
+    <meta name="description" content="App di traduzione Italiano-Arabo per bambini">
+
+    <title>🌈 Traduci e Impara!</title>
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="apple-touch-icon" href="icon.svg">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🌈 Traduci e Impara! 🌈</h1>
+            <p class="subtitle">Italiano ↔ العربية</p>
+        </header>
+
+        <div class="columns">
+            <!-- Colonna Italiana -->
+            <div class="column italian">
+                <div class="column-header">
+                    <span class="flag">🇮🇹</span>
+                    <label for="inputIT">Italiano</label>
+                </div>
+                <textarea id="inputIT" placeholder="Scrivi qui una parola..."></textarea>
+                <div id="outputIT" class="translation-box"></div>
+                <button id="speakIT" class="speak-btn">🔊 Ascolta</button>
+            </div>
+
+            <!-- Colonna Araba -->
+            <div class="column arabic">
+                <div class="column-header">
+                    <span class="flag">🇸🇦</span>
+                    <label for="inputAR">العربية</label>
+                </div>
+                <textarea id="inputAR" placeholder="...اكتب هنا" dir="rtl"></textarea>
+                <div id="outputAR" class="translation-box" dir="rtl"></div>
+                <button id="speakAR" class="speak-btn">🔊 استمع</button>
+                <button id="toggleKeyboardBtn" class="keyboard-btn">⌨️ Tastiera Araba</button>
+                <div id="virtualKeyboard" class="keyboard"></div>
+            </div>
+        </div>
+
+        <!-- Sezione Parole per Categoria -->
+        <section class="word-categories">
+            <h2>📚 Parole da Imparare</h2>
+            <p class="hint">Clicca su una parola per tradurla!</p>
+
+            <div class="category-tabs">
+                <button class="tab active" data-category="saluti">👋 Saluti</button>
+                <button class="tab" data-category="famiglia">👨‍👩‍👧‍👦 Famiglia</button>
+                <button class="tab" data-category="scuola">🏫 Scuola</button>
+                <button class="tab" data-category="casa">🏠 Casa</button>
+                <button class="tab" data-category="cibo">🍎 Cibo</button>
+                <button class="tab" data-category="colori">🎨 Colori</button>
+                <button class="tab" data-category="numeri">🔢 Numeri</button>
+                <button class="tab" data-category="giorni">📅 Giorni</button>
+                <button class="tab" data-category="animali">🐾 Animali</button>
+                <button class="tab" data-category="frasi">💬 Frasi</button>
+            </div>
+
+            <div id="wordGrid" class="word-grid"></div>
+        </section>
+
+        <!-- Install prompt (for PWA) -->
+        <div id="installPrompt" class="install-prompt" style="display: none;">
+            <p>📲 Installa l'app sul tuo telefono!</p>
+            <button id="installBtn">Installa</button>
+            <button id="dismissBtn">Non ora</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('Service Worker registrato!'))
+                .catch(err => console.log('Errore SW:', err));
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,19 @@
+{
+    "name": "Traduci e Impara",
+    "short_name": "Traduci",
+    "description": "App di traduzione Italiano-Arabo per bambini",
+    "start_url": "./index.html",
+    "scope": "./",
+    "display": "standalone",
+    "background_color": "#667eea",
+    "theme_color": "#6C63FF",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        }
+    ]
+}
